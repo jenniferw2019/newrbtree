@@ -27,7 +27,7 @@ int main()
   while (runProgram == true)
     {
       //ask user to add a number, read in from file, visualize tree, or end program
-      cout << "Type ADD, READ, VISUALIZE, QUIT" << endl;
+      cout << "Type ADD, READ, VISUALIZE, DELETE, QUIT" << endl;
       cin.get(option, 20);
       cin.get();
 
@@ -107,6 +107,23 @@ int main()
 	{
 	  runProgram = false;
 	}
+      
+      else if (strcmp(option, "MAX") == 0)
+	{
+	  node* max = new node;
+	  max = maximum(Tree);
+	  cout << "value: " << max->data << " " << "parent: " << (max->parent)->data << endl;
+	}
+      else if (strcmp(option, "DELETE") == 0)
+	{
+	  int delnumber = 0;
+	  cout << "Type a number to delete" << endl;
+	  cin >> delnumber;
+	  cin.get();
+
+	  deleteNode(Tree, delnumber);
+	}
+      
     }
   
 }

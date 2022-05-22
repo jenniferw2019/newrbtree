@@ -26,7 +26,7 @@ void insert(node* &root, node* parent, node* current, node* newNode)
 	  parent->left = current;
 	  current->parent = parent;
 	}
-      if (newNode->data >= parent->data)
+      else
 	{
 	  parent->right = current;
 	  current->parent = parent;
@@ -36,11 +36,11 @@ void insert(node* &root, node* parent, node* current, node* newNode)
   else
     {
       parent = current;
-      if (current->data > newNode->data)
+      if (newNode->data < current->data)
 	{
 	  current = current->left;
 	}
-      else if (current->data <= newNode->data)
+      else
 	{
 	  current = current->right;
 	}
@@ -313,3 +313,55 @@ void updateTree(node* &root, node* n)
       
     } // n!= root
 }
+
+node* maximum(node* root)
+{
+  if (root->right != NULL)
+    {
+      root = root->right;
+      return maximum(root);
+    }
+  else
+    {
+      return root;
+    }
+}
+
+void deleteNode(node* root, int deleteData)
+{
+  node* delnode = search(root, root, root, deleteData);
+  if (delnode == NULL)
+    {
+      cout << "number is not in tree" << endl;
+    }
+  else // found number in tree
+    {
+      //if del node has both children, find predecessor, replace delnode value with predecessor value
+      //set delnode as precedessor, now delnode has at most 1 child (either no childre, or only 1 child)
+      if (delnode->left != NULL && delnode->right != NULL)
+	{
+	  node* predecessor = maximum(delnode->left);
+	  delnode->data = predecessor->data;
+	  delnode = predecessor;
+	}
+      
+      //delnode has 1 child
+      if (delnode->right != NULL && delnode->left == NULL) //right child
+	{
+	  delnode->data = (delnode->right)->data;
+	  node* temp = delnode->right;
+	  delnode->right = NULL;
+	  temp->parent = NULL;
+	  delete temp;
+	}
+      else if (delnode->right == NULL && delnode->left != NULL) //left child
+	{
+	  delnode->data = (delnode->left)->data;
+	  node* temp = delnode->left;
+	  delnode->left = NULL;
+	  temp->parent = NULL;
+	  delete temp;
+	}
+    }
+}
+
