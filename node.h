@@ -8,6 +8,7 @@
 using namespace std;
 
 enum nodeColor {black, red};
+enum nodeDir {Right, Left};
 
 struct node
 {
@@ -31,4 +32,9 @@ void treeRotationLeft(node* &root, node* subRoot);
 void updateTree(node* &root, node* n);
 node* maximum(node* root);
 void deleteNode(node* root, int insertData);
+nodeDir getDirection(node* cnode);
+node* getSibling(node* pnode, nodeDir cdirect);
+node* getCNephew(node* snode, nodeDir cdirect);
+node* getDNephew(node* snode, nodeDir cdirect);
+
 #endif

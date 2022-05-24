@@ -327,9 +327,64 @@ node* maximum(node* root)
     }
 }
 
+nodeDir getDirection(node* cnode)
+{
+  node* nodeparent = cnode->parent;
+  if (cnode == nodeparent->left)
+    {
+      return Left;
+    }
+  else
+    {
+      return Right;
+    }
+}
+
+node* getSibling(node* pnode, nodeDir cdirect) //current node direction
+{
+  if (cdirect == Left)
+    {
+      return pnode->right;
+    }
+  else
+    {
+      return pnode->left;
+    }
+}
+
+node* getCNephew(node* snode, nodeDir cdirect) //current node direction
+{
+  if (cdirect == Left)
+    {
+      return snode->left;
+    }
+  else
+    {
+      return snode->right;
+    }
+}
+
+node* getDNephew(node* snode, nodeDir cdirect)
+{
+  if (cdirect == Left)
+    {
+      return snode->right;
+    }
+  else
+    {
+      return snode->left;
+    }
+}
+
 void deleteNode(node* root, int deleteData)
 {
-  node* delnode = search(root, root, root, deleteData);
+  node* cparent; //current node's parent
+  node* sibling; //current node's sibling
+  node* cNephew; //current node's close nephew
+  node* dNephew; //current node's distant nephew
+  node* gparent; //current node's grandparent
+  node* delnode; //current node (need to delete)
+  delnode = search(root, root, root, deleteData);
   if (delnode == NULL)
     {
       cout << "number is not in tree" << endl;
@@ -362,6 +417,29 @@ void deleteNode(node* root, int deleteData)
 	  temp->parent = NULL;
 	  delete temp;
 	}
-    }
+      else //no children
+	{
+	  if (delnode->color == red)
+	    {
+	      nodeDir deldirect = getDirection(delnode);
+	      cparent = delnode->parent;
+	      if (deldirect == Left)
+		{
+		  //cparent = delnode->parent;
+		  cparent->left = NULL;
+		  //delnode->parent = NULL;
+		  //delete delnode;
+		}
+	      else //deldirect == Right
+		{
+		  //cparent = delnode->parent;
+		  cparent->right = NULL;
+		  //delnode->parent = NULL;
+		  //delete delnode;
+		}
+	      delnode->parent = NULL;
+	      delete delnode;
+	    }
+	}//no children
+    }//else, found number in tree
 }
-
