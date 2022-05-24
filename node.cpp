@@ -376,7 +376,7 @@ node* getDNephew(node* snode, nodeDir cdirect)
     }
 }
 
-void deleteNode(node* root, int deleteData)
+void deleteNode(node* &root, int deleteData)
 {
   node* cparent; //current node's parent
   node* sibling; //current node's sibling
@@ -439,6 +439,78 @@ void deleteNode(node* root, int deleteData)
 		}
 	      delnode->parent = NULL;
 	      delete delnode;
+	    }
+	  else //delnode is black given no children;
+	    {
+	      //delete root
+	      if (root == delnode)
+		{
+		  root = NULL;
+		  delete delnode;
+		  return;
+		}
+	      cparent = delnode->parent;
+	      nodeDir direct = getDirection(delnode);
+	      sibling = getSibling(cparent, direct);
+	      cNephew = getCNephew(sibling, direct);
+	      dNephew = getDNephew(sibling, direct);
+	      gparent = getParent(root, root, root, delnode);
+	      
+	      if (delnode == cparent->left) //left child
+		{
+		  cparent->left = NULL;
+		  delnode->parent = NULL;
+		  delete delnode;
+		}
+	      else
+		{
+		  cparent->right = NULL;
+		  delnode->parent = NULL;
+		  delete delnode;
+		}
+
+	      //update red black tree
+
+	      do {
+		if (sibling->color == red) //case 3: sibling color is red
+		  {
+		    if (direct == Left)
+		      {
+			treeRotationLeft(root, cparent);
+		      }//direction left
+		    
+		    else //direction right
+		      {
+			treeRotationRight(root, cparent);
+		      }
+		    cparent->color = sibling->color;
+		    sibling->color = black;
+		    sibling = cNephew;
+		    cNephew = getCNephew(sibling, direct);
+		    dNephew = getDNephew(sibling, direct);
+		  }//sibling is red
+
+		cout << "line 493" << endl;
+		if (dNephew != NULL && dNephew->color == red) //case 6: distant nephew is red, sibling is black
+		  {
+		    cout << "line 496" << endl;
+		    if (direct == Left)
+		      {
+			treeRotationLeft(root, cparent);
+		      }
+		    else
+		      {
+			treeRotationRight(root, cparent);
+		      }
+		    sibling->color = cparent->color;
+		    cparent->color = black;
+		    dNephew->color = black;
+		    return;
+		  }
+	      } while (cparent != NULL);
+	      
+	      
+	      
 	    }
 	}//no children
     }//else, found number in tree

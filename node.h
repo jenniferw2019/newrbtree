@@ -31,7 +31,7 @@ void treeRotationRight(node* &root,node* subRoot);
 void treeRotationLeft(node* &root, node* subRoot);
 void updateTree(node* &root, node* n);
 node* maximum(node* root);
-void deleteNode(node* root, int insertData);
+void deleteNode(node* &root, int insertData);
 nodeDir getDirection(node* cnode);
 node* getSibling(node* pnode, nodeDir cdirect);
 node* getCNephew(node* snode, nodeDir cdirect);
