@@ -490,10 +490,39 @@ void deleteNode(node* &root, int deleteData)
 		    dNephew = getDNephew(sibling, direct);
 		  }//sibling is red
 
-		cout << "line 493" << endl;
+		//cout << "line 493" << endl;
 		if (dNephew != NULL && dNephew->color == red) //case 6: distant nephew is red, sibling is black
 		  {
-		    cout << "line 496" << endl;
+		    //cout << "line 496" << endl;
+		    if (direct == Left)
+		      {
+			treeRotationLeft(root, cparent);
+		      }
+		    else
+		      {
+			treeRotationRight(root, cparent);
+		      }
+		    sibling->color = cparent->color;
+		    cparent->color = black;
+		    dNephew->color = black;
+		    return;
+		  }
+
+		if (cNephew != NULL && cNephew->color == red) //case 5: sibling is black, close nephew is red
+		  {
+		    if (direct == Left)
+		      {
+			treeRotationRight(root, sibling);
+		      }
+		    else
+		      {
+			treeRotationLeft(root, sibling);
+		      }
+		    sibling->color = red;
+		    cNephew->color = black;
+		    dNephew = sibling;
+		    sibling = cNephew;
+		    //fall through to case 6
 		    if (direct == Left)
 		      {
 			treeRotationLeft(root, cparent);
