@@ -425,17 +425,11 @@ void deleteNode(node* &root, int deleteData)
 	      cparent = delnode->parent;
 	      if (deldirect == Left)
 		{
-		  //cparent = delnode->parent;
 		  cparent->left = NULL;
-		  //delnode->parent = NULL;
-		  //delete delnode;
 		}
 	      else //deldirect == Right
 		{
-		  //cparent = delnode->parent;
 		  cparent->right = NULL;
-		  //delnode->parent = NULL;
-		  //delete delnode;
 		}
 	      delnode->parent = NULL;
 	      delete delnode;
@@ -451,10 +445,6 @@ void deleteNode(node* &root, int deleteData)
 		}
 	      cparent = delnode->parent;
 	      nodeDir direct = getDirection(delnode);
-	      sibling = getSibling(cparent, direct);
-	      cNephew = getCNephew(sibling, direct);
-	      dNephew = getDNephew(sibling, direct);
-	      gparent = getParent(root, root, root, delnode);
 	      
 	      if (delnode == cparent->left) //left child
 		{
@@ -472,7 +462,11 @@ void deleteNode(node* &root, int deleteData)
 	      //update red black tree
 
 	      do {
-		if (sibling->color == red) //case 3: sibling color is red
+		sibling = getSibling(cparent, direct);
+		cNephew = getCNephew(sibling, direct);
+		dNephew = getDNephew(sibling, direct);
+	    	
+		if (sibling->color == red) //case 3: sibling color is red. parent, cNephew, dNephew are black
 		  {
 		    if (direct == Left)
 		      {
@@ -490,10 +484,9 @@ void deleteNode(node* &root, int deleteData)
 		    dNephew = getDNephew(sibling, direct);
 		  }//sibling is red
 
-		//cout << "line 493" << endl;
 		if (dNephew != NULL && dNephew->color == red) //case 6: distant nephew is red, sibling is black
 		  {
-		    //cout << "line 496" << endl;
+		    
 		    if (direct == Left)
 		      {
 			treeRotationLeft(root, cparent);
@@ -508,7 +501,8 @@ void deleteNode(node* &root, int deleteData)
 		    return;
 		  }
 
-		if (cNephew != NULL && cNephew->color == red) //case 5: sibling is black, close nephew is red
+		if (cNephew != NULL && cNephew->color == red) //case 5: sibling is black,
+		  //distant nephew is black, close nephew is red
 		  {
 		    if (direct == Left)
 		      {
@@ -536,11 +530,28 @@ void deleteNode(node* &root, int deleteData)
 		    dNephew->color = black;
 		    return;
 		  }
+
+		if (cparent->color == red) //case 4: if parent is red, sibling, dNephew, cNephew are all black
+		  {
+		    sibling->color = red;
+		    cparent->color = black;
+		    return;
+		  }//parent is red
+
+		//case 1: parent, sibling, cNephew, dNephew are all black
+		sibling->color = red;
+		delnode = cparent;
+		cparent = delnode->parent;
+
+		if (cparent != NULL)
+		  {
+		    direct = getDirection(delnode);
+		  }
 	      } while (cparent != NULL);
 	      
+	      return; //case 2: update complete
 	      
-	      
-	    }
+	    }//delnode is black
 	}//no children
     }//else, found number in tree
 }

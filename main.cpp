@@ -2,6 +2,8 @@
 This program allows the user to enter a number into the red black tree with the console or 
 read in a string of numbers with a file. 
 The user can visualize the tree that shows the number, color, and parent. 
+The user can also search for a number, 
+delete any number from the tree and also quit the program.
 Author: Jennifer Wang
 5/5/22
  */
@@ -27,7 +29,7 @@ int main()
   while (runProgram == true)
     {
       //ask user to add a number, read in from file, visualize tree, or end program
-      cout << "Type ADD, READ, VISUALIZE, DELETE, QUIT" << endl;
+      cout << "Type ADD, READ, VISUALIZE, SEARCH, DELETE, QUIT" << endl;
       cin.get(option, 20);
       cin.get();
 
@@ -107,7 +109,8 @@ int main()
 	{
 	  runProgram = false;
 	}
-      
+
+      /*
       else if (strcmp(option, "TEST") == 0)
 	{
 	  int number = 0;
@@ -120,12 +123,12 @@ int main()
 	  node* sibling = getSibling(curnode->parent, direction);
 	  node* Dnephew= getDNephew(sibling, direction);
 	  cout << Dnephew->data << endl;
-	  /*
+	  
 	  node* max = new node;
 	  max = maximum(Tree);
 	  cout << "value: " << max->data << " " << "parent: " << (max->parent)->data << endl;
 	  */
-	}
+      //}
       else if (strcmp(option, "DELETE") == 0)
 	{
 	  int delnumber = 0;
@@ -134,6 +137,23 @@ int main()
 	  cin.get();
 
 	  deleteNode(Tree, delnumber);
+	}
+      else if (strcmp(option, "SEARCH") == 0)
+	{
+	  int number = 0;
+	  cout << "Type a number to search" << endl;
+	  cin >> number;
+	  cin.get();
+	  node* searchnode = new node();
+	  searchnode = search(Tree, Tree, Tree, number);
+	  if (searchnode != NULL)
+	    {
+	      cout << "number is in tree" << endl;
+	    }
+	  else
+	    {
+	      cout << "number is not in tree" << endl;
+	    }
 	}
       
     }
