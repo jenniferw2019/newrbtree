@@ -110,25 +110,7 @@ int main()
 	  runProgram = false;
 	}
 
-      /*
-      else if (strcmp(option, "TEST") == 0)
-	{
-	  int number = 0;
-	  cout << "type a number" << endl;
-	  cin >> number;
-	  cin.get();
-
-	  node* curnode = search(Tree, Tree, Tree, number);
-	  nodeDir direction = getDirection(curnode);
-	  node* sibling = getSibling(curnode->parent, direction);
-	  node* Dnephew= getDNephew(sibling, direction);
-	  cout << Dnephew->data << endl;
-	  
-	  node* max = new node;
-	  max = maximum(Tree);
-	  cout << "value: " << max->data << " " << "parent: " << (max->parent)->data << endl;
-	  */
-      //}
+      //if delete, delete a number from the tree
       else if (strcmp(option, "DELETE") == 0)
 	{
 	  int delnumber = 0;
@@ -138,6 +120,7 @@ int main()
 
 	  deleteNode(Tree, delnumber);
 	}
+      //if search, search for a number 
       else if (strcmp(option, "SEARCH") == 0)
 	{
 	  int number = 0;
